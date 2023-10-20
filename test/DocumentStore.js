@@ -8,15 +8,16 @@ describe("DocumentStore", async () => {
   let DocumentStore;
   let DocumentStoreInstance;
 
-  const adminRole = ethers.constants.HashZero;
-  const issuerRole = ethers.utils.id("ISSUER_ROLE");
-  const revokerRole = ethers.utils.id("REVOKER_ROLE");
+  const adminRole = ethers.ZeroHash;
+
+  const issuerRole = ethers.id("ISSUER_ROLE");
+  const revokerRole = ethers.id("REVOKER_ROLE");
 
   beforeEach("", async () => {
     Accounts = await ethers.getSigners();
     DocumentStore = await ethers.getContractFactory("DocumentStore");
     DocumentStoreInstance = await DocumentStore.connect(Accounts[0]).deploy(config.INSTITUTE_NAME, Accounts[0].address);
-    await DocumentStoreInstance.deployed();
+    await DocumentStoreInstance.waitForDeployment();
   });
 
   describe("initializer", () => {
@@ -29,7 +30,7 @@ describe("DocumentStore", async () => {
   describe("Access Control", () => {
     describe("Initialisation", () => {
       it("should revert if owner is zero address", async () => {
-        const tx = DocumentStore.connect(Accounts[0]).deploy(config.INSTITUTE_NAME, ethers.constants.AddressZero);
+        const tx = DocumentStore.connect(Accounts[0]).deploy(config.INSTITUTE_NAME, ethers.ZeroAddress);
 
         await expect(tx).to.be.revertedWith("Owner is zero");
       });
@@ -71,8 +72,8 @@ describe("DocumentStore", async () => {
       const receipt = await tx.wait();
 
       // FIXME: Use a utility helper to watch for event
-      expect(receipt.events[0].event).to.be.equal("DocumentIssued", "Document issued event not emitted.");
-      expect(receipt.events[0].args.document).to.be.equal(documentMerkleRoot, "Incorrect event arguments emitted");
+      expect(receipt.logs[0].fragment.name).to.be.equal("DocumentIssued", "Document issued event not emitted.");
+      expect(receipt.logs[0].args.document).to.be.equal(documentMerkleRoot, "Incorrect event arguments emitted");
 
       const issued = await DocumentStoreInstance.isIssued(documentMerkleRoot);
       expect(issued, "Document is not issued").to.be.true;
@@ -116,7 +117,7 @@ describe("DocumentStore", async () => {
       const tx = await DocumentStoreInstance.bulkIssue(documentMerkleRoots);
       const receipt = await tx.wait();
       // FIXME:
-      expect(receipt.events[0].event).to.be.equal("DocumentIssued", "Document issued event not emitted.");
+      expect(receipt.logs[0].fragment.name).to.be.equal("DocumentIssued", "Document issued event not emitted.");
 
       const document1Issued = await DocumentStoreInstance.isIssued(documentMerkleRoots[0]);
       expect(document1Issued, "Document 1 is not issued").to.be.true;
@@ -131,10 +132,10 @@ describe("DocumentStore", async () => {
       const tx = await DocumentStoreInstance.bulkIssue(documentMerkleRoots);
       const receipt = await tx.wait();
       // FIXME:
-      expect(receipt.events[0].event).to.be.equal("DocumentIssued", "Document issued event not emitted.");
-      expect(receipt.events[0].args.document).to.be.equal(documentMerkleRoots[0], "Event not emitted for document 1");
-      expect(receipt.events[1].args.document).to.be.equal(documentMerkleRoots[1], "Event not emitted for document 2");
-      expect(receipt.events[2].args.document).to.be.equal(documentMerkleRoots[2], "Event not emitted for document 3");
+      expect(receipt.logs[0].fragment.name).to.be.equal("DocumentIssued", "Document issued event not emitted.");
+      expect(receipt.logs[0].args.document).to.be.equal(documentMerkleRoots[0], "Event not emitted for document 1");
+      expect(receipt.logs[1].args.document).to.be.equal(documentMerkleRoots[1], "Event not emitted for document 2");
+      expect(receipt.logs[2].args.document).to.be.equal(documentMerkleRoots[2], "Event not emitted for document 3");
 
       const document1Issued = await DocumentStoreInstance.isIssued(documentMerkleRoots[0]);
       expect(document1Issued, "Document 1 is not issued").to.be.true;
@@ -233,8 +234,8 @@ describe("DocumentStore", async () => {
       const receipt = await tx.wait();
 
       // FIXME: Use a utility helper to watch for event
-      expect(receipt.events[0].event).to.be.equal("DocumentRevoked");
-      expect(receipt.events[0].args.document).to.be.equal(documentHash);
+      expect(receipt.logs[0].fragment.name).to.be.equal("DocumentRevoked");
+      expect(receipt.logs[0].args.document).to.be.equal(documentHash);
     });
 
     it("should allow the revocation of an issued root", async () => {
@@ -246,8 +247,8 @@ describe("DocumentStore", async () => {
       const receipt = await tx.wait();
 
       // FIXME: Use a utility helper to watch for event
-      expect(receipt.events[0].event).to.be.equal("DocumentRevoked");
-      expect(receipt.events[0].args.document).to.be.equal(documentHash);
+      expect(receipt.logs[0].fragment.name).to.be.equal("DocumentRevoked");
+      expect(receipt.logs[0].args.document).to.be.equal(documentHash);
     });
 
     it("should not allow repeated revocation of a valid and issued document", async () => {
@@ -267,8 +268,8 @@ describe("DocumentStore", async () => {
       const receipt = await tx.wait();
 
       // FIXME: Use a utility helper to watch for event
-      expect(receipt.events[0].event).to.be.equal("DocumentRevoked");
-      expect(receipt.events[0].args.document).to.be.equal(documentHash);
+      expect(receipt.logs[0].fragment.name).to.be.equal("DocumentRevoked");
+      expect(receipt.logs[0].args.document).to.be.equal(documentHash);
     });
 
     it("should revert when caller has no revoker role", async () => {
@@ -300,7 +301,7 @@ describe("DocumentStore", async () => {
       const receipt = await tx.wait();
 
       // FIXME:
-      expect(receipt.events[0].event).to.be.equal("DocumentRevoked", "Document revoked event not emitted.");
+      expect(receipt.logs[0].fragment.name).to.be.equal("DocumentRevoked", "Document revoked event not emitted.");
 
       const document1Revoked = await DocumentStoreInstance.isRevoked(documentMerkleRoots[0]);
       expect(document1Revoked, "Document 1 is not revoked").to.be.true;
@@ -316,10 +317,10 @@ describe("DocumentStore", async () => {
       const receipt = await tx.wait();
 
       // FIXME:
-      expect(receipt.events[0].event).to.be.equal("DocumentRevoked", "Document revoked event not emitted.");
-      expect(receipt.events[0].args.document).to.be.equal(documentMerkleRoots[0], "Event not emitted for document 1");
-      expect(receipt.events[1].args.document).to.be.equal(documentMerkleRoots[1], "Event not emitted for document 2");
-      expect(receipt.events[2].args.document).to.be.equal(documentMerkleRoots[2], "Event not emitted for document 3");
+      expect(receipt.logs[0].fragment.name).to.be.equal("DocumentRevoked", "Document revoked event not emitted.");
+      expect(receipt.logs[0].args.document).to.be.equal(documentMerkleRoots[0], "Event not emitted for document 1");
+      expect(receipt.logs[1].args.document).to.be.equal(documentMerkleRoots[1], "Event not emitted for document 2");
+      expect(receipt.logs[2].args.document).to.be.equal(documentMerkleRoots[2], "Event not emitted for document 3");
 
       const document1Revoked = await DocumentStoreInstance.isRevoked(documentMerkleRoots[0]);
       expect(document1Revoked, "Document 1 is not revoked").to.be.true;

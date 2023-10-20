@@ -2,7 +2,6 @@
 
 require("@nomicfoundation/hardhat-toolbox");
 require("@typechain/hardhat");
-
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
