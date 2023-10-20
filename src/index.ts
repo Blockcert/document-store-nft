@@ -13,6 +13,9 @@ interface DeployOptions {
 
 export const deploy = async (
   name: string,
+  nftName: string,
+  nftSymbol: string,
+  domainName: string,
   signer: Signer,
   options?: DeployOptions
 ): Promise<ContractTransactionResponse> => {
@@ -22,12 +25,19 @@ export const deploy = async (
     documentStoreCreatorFactoryAddress = getDocumentStoreCreatorAddress(chainId);
   }
   const factory = DocumentStoreCreatorFactory.connect(documentStoreCreatorFactoryAddress, signer);
-  const tx = await factory.deploy(name);
+  const tx = await factory.deploy(name, nftName, nftSymbol, domainName);
   return tx;
 };
 
-export const deployAndWait = async (name: string, signer: Signer, options?: DeployOptions) => {
-  const receipt = await (await deploy(name, signer, options)).wait();
+export const deployAndWait = async (
+  name: string,
+  nftName: string,
+  nftSymbol: string,
+  domainName: string,
+  signer: Signer,
+  options?: DeployOptions
+) => {
+  const receipt = await (await deploy(name, nftName, nftSymbol, domainName, signer, options)).wait();
   if (!receipt || !receipt.logs || !receipt.logs[0].address)
     throw new Error("Fail to detect deployed contract address");
   return DocumentStoreFactory.connect(receipt.logs![0].address, signer);

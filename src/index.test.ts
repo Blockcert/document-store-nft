@@ -22,14 +22,18 @@ beforeAll(async () => {
 
 describe("deploy", () => {
   it("deploys a new DocumentStore contract without waiting for confirmation", async () => {
-    const receipt = await deploy("My Store", signer, { documentStoreCreatorAddressOverride });
+    const receipt = await deploy("My Store", "My Store NFT", "MFN", "demo.example.com", signer, {
+      documentStoreCreatorAddressOverride,
+    });
     expect(receipt.from).toBe(account);
   });
 });
 
 describe("deployAndWait", () => {
   it("deploys a new DocumentStore contract", async () => {
-    const instance = await deployAndWait("My Store", signer, { documentStoreCreatorAddressOverride });
+    const instance = await deployAndWait("My Store", "My Store NFT", "MFN", "demo.example.com", signer, {
+      documentStoreCreatorAddressOverride,
+    });
 
     const hasAdminRole = await instance.hasRole(adminRole, account);
     const hasIssuerRole = await instance.hasRole(issuerRole, account);
@@ -45,7 +49,9 @@ describe("deployAndWait", () => {
 
 describe("connect", () => {
   it("connects to existing contract", async () => {
-    const documentStore = await deployAndWait("My Store", signer, { documentStoreCreatorAddressOverride });
+    const documentStore = await deployAndWait("My Store", "My Store NFT", "MFN", "demo.example.com", signer, {
+      documentStoreCreatorAddressOverride,
+    });
     const address = await documentStore.getAddress();
     const instance = await connect(address, signer);
     const name = await instance.name();
