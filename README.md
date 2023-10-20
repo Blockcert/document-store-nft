@@ -1,4 +1,4 @@
-# Document Store
+# Document Store NFT
 
 The [Document Store](https://github.com/Open-Attestation/document-store) repository contains both the smart contract code for document store (in `/contracts`) as well as the node package for using this library (in `/src`).
 
