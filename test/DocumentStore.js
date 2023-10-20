@@ -16,7 +16,11 @@ describe("DocumentStore", async () => {
   beforeEach("", async () => {
     Accounts = await ethers.getSigners();
     DocumentStore = await ethers.getContractFactory("DocumentStore");
-    DocumentStoreInstance = await DocumentStore.connect(Accounts[0]).deploy(config.INSTITUTE_NAME, Accounts[0].address);
+    DocumentStoreInstance = await DocumentStore.connect(Accounts[0]).deploy(
+      config.INSTITUTE_NAME,
+      Accounts[0].address,
+      config.DOMAIN_NAME
+    );
     await DocumentStoreInstance.waitForDeployment();
   });
 
@@ -30,7 +34,11 @@ describe("DocumentStore", async () => {
   describe("Access Control", () => {
     describe("Initialisation", () => {
       it("should revert if owner is zero address", async () => {
-        const tx = DocumentStore.connect(Accounts[0]).deploy(config.INSTITUTE_NAME, ethers.ZeroAddress);
+        const tx = DocumentStore.connect(Accounts[0]).deploy(
+          config.INSTITUTE_NAME,
+          ethers.ZeroAddress,
+          config.DOMAIN_NAME
+        );
 
         await expect(tx).to.be.revertedWith("Owner is zero");
       });

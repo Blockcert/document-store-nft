@@ -26,7 +26,7 @@ contract DocumentStoreWithRevokeReasons is DocumentStore {
    * @param _name The name of the contract
    * @param owner The owner of the contract
    */
-  constructor(string memory _name, address owner) DocumentStore(_name, owner) {}
+  constructor(string memory _name, address owner, string memory _domainName) DocumentStore(_name, owner, _domainName) {}
 
   /**
    * @notice Revokes a document with a reason
@@ -35,10 +35,10 @@ contract DocumentStoreWithRevokeReasons is DocumentStore {
    * @return A boolean indicating whether the revocation was successful
    */
   function revoke(bytes32 document, uint256 reason)
-    public
-    onlyRole(REVOKER_ROLE)
-    onlyNotRevoked(document)
-    returns (bool)
+  public
+  onlyRole(REVOKER_ROLE)
+  onlyNotRevoked(document)
+  returns (bool)
   {
     revoke(document);
     revokeReason[document] = reason;

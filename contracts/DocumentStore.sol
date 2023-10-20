@@ -13,13 +13,18 @@ import "./base/DocumentStoreAccessControl.sol";
  * @notice A contract for storing and revoking documents with access control
  */
 contract DocumentStore is BaseDocumentStore, DocumentStoreAccessControl {
+
+  address public certAddress;
+  string public domainName;
+
   /**
    * @notice Initialises the contract with a name and owner
    * @param _name The name of the contract
    * @param owner The owner of the contract
    */
-  constructor(string memory _name, address owner) {
+  constructor(string memory _name, address owner, string memory _domainName) {
     initialize(_name, owner);
+    domainName = _domainName;
   }
 
   /**
@@ -63,5 +68,13 @@ contract DocumentStore is BaseDocumentStore, DocumentStoreAccessControl {
    */
   function bulkRevoke(bytes32[] memory documents) public onlyRole(REVOKER_ROLE) {
     return BaseDocumentStore._bulkRevoke(documents);
+  }
+
+  function setCertAddress(address _certAddress) public onlyRole(DEFAULT_ADMIN_ROLE) {
+    certAddress = _certAddress;
+  }
+
+  function setDomainName(string memory newDomainName) public onlyRole(DEFAULT_ADMIN_ROLE) {
+    domainName = newDomainName;
   }
 }

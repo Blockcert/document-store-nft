@@ -18,6 +18,7 @@ contract DocumentStoreAccessControl is AccessControlUpgradeable {
    */
   function __DocumentStoreAccessControl_init(address owner) internal onlyInitializing {
     require(owner != address(0), "Owner is zero");
+    _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
     _setupRole(DEFAULT_ADMIN_ROLE, owner);
     _setupRole(ISSUER_ROLE, owner);
     _setupRole(REVOKER_ROLE, owner);

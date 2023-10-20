@@ -1,6 +1,15 @@
 # Document Store NFT
 
-The [Document Store](https://github.com/Open-Attestation/document-store) repository contains both the smart contract code for document store (in `/contracts`) as well as the node package for using this library (in `/src`).
+The [Document Store](https://github.com/Open-Attestation/document-store) repository contains both the smart contract
+code for document store (in `/contracts`) as well as the node package for using this library (in `/src`).
+
+## Deployed on Sepolia
+
+| name                 | contract address                                                                                                                   |
+|----------------------|------------------------------------------------------------------------------------------------------------------------------------|
+| DocumentStoreCreator | [0xd5713D82dA55F2a26343B04375FAf5De3255689D](https://sepolia.etherscan.io/address/0xd5713D82dA55F2a26343B04375FAf5De3255689D#code) |
+| DocumentStore        | [0x9E96b9AF28c105B149dbfD64A51b6Dc8a57C9C63](https://sepolia.etherscan.io/address/0x9E96b9AF28c105B149dbfD64A51b6Dc8a57C9C63#code) |
+| DocumentCertNFT      | [0x1dC78def18fEC1C1be75Ab7Dd46bd67f65e8B5f1](https://sepolia.etherscan.io/address/0x1dC78def18fEC1C1be75Ab7Dd46bd67f65e8B5f1#code) |
 
 ## Installation
 
@@ -12,7 +21,9 @@ npm i @govtechsg/document-store
 
 ## Usage
 
-To use the package, you will need to provide your own Web3 [provider](https://docs.ethers.io/v5/api/providers/api-providers/) or [signer](https://docs.ethers.io/v5/api/signer/#Wallet) (if you are writing to the blockchain).
+To use the package, you will need to provide your own
+Web3 [provider](https://docs.ethers.io/v5/api/providers/api-providers/)
+or [signer](https://docs.ethers.io/v5/api/signer/#Wallet) (if you are writing to the blockchain).
 
 ### Deploy new document store
 
@@ -107,4 +118,5 @@ npm run benchmark
 
 ## Notes
 
-If you are using vscode, you may need to link the openzeppelin libraries. Refer to [here](https://github.com/juanfranblanco/vscode-solidity#openzeppelin).
+If you are using vscode, you may need to link the openzeppelin libraries. Refer
+to [here](https://github.com/juanfranblanco/vscode-solidity#openzeppelin).

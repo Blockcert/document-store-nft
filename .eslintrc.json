@@ -1,13 +1,21 @@
 {
   "parser": "@babel/eslint-parser",
-  "extends": ["airbnb-base", "plugin:prettier/recommended"],
+  "extends": [
+    "airbnb-base",
+    "plugin:prettier/recommended"
+  ],
   "env": {
     "jest": true
   },
   "settings": {
     "import/resolver": {
       "node": {
-        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".ts",
+          ".tsx"
+        ]
       }
     }
   },
@@ -23,23 +31,45 @@
   },
   "overrides": [
     {
-      "files": ["**/*.ts", "**/*.tsx"],
+      "files": [
+        "**/*.ts",
+        "**/*.tsx"
+      ],
+      "excludedFiles": [
+        "deploy/*"
+      ],
       "parser": "@typescript-eslint/parser",
       "parserOptions": {
         "project": "./tsconfig.json"
       },
-      "plugins": ["@typescript-eslint"],
+      "plugins": [
+        "@typescript-eslint"
+      ],
       "rules": {
         "no-undef": "off",
         "no-unused-vars": "off",
         "no-restricted-globals": "off",
         "import/prefer-default-export": "off",
-        "import/no-extraneous-dependencies": ["error", { "devDependencies": ["**/*.test.*"] }]
+        "import/no-extraneous-dependencies": [
+          "error",
+          {
+            "devDependencies": [
+              "**/*.test.*"
+            ]
+          }
+        ]
       }
     },
     {
-      "files": ["test/*.js", "benchmark/*.js", "scripts/*.js"],
-      "plugins": ["chai-friendly", "chai-expect"],
+      "files": [
+        "test/*.js",
+        "benchmark/*.js",
+        "scripts/*.js"
+      ],
+      "plugins": [
+        "chai-friendly",
+        "chai-expect"
+      ],
       "env": {
         "mocha": true
       },
