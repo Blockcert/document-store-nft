@@ -17,6 +17,7 @@ module.exports = async function ({ ethers, network, getNamedAccounts, deployment
     "0x2aaA638A1b01D0F4632824F31cC8c81505E4259A",
     "0xd0782616AfA199d20dD963D59f6D1782413Dfe97",
     "0x44848af170967398369be21099A423c701b7815d",
+    "0xD51EF194E19cE5b35C20aD7B2aE15652C23c694B",
   ];
 
   const storeRoles = [
